@@ -33,7 +33,7 @@ class CashCardApiApplicationTests {
 	}
 
 	@Test
-	void shouldNotReturnACashCardWithAnUnknownId() {
+	void shouldNotReturnACashCardWithAnUnknownId() throws IOException {
 		ResponseEntity<String> response = restTemplate.getForEntity("/cashcards/9999", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertThat(response.getBody()).isBlank();
