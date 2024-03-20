@@ -1,11 +1,11 @@
 package ant.cashcardapi;
 
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Optional;
 
 @RestController // Tells Spring that this class is a Component of type RestController
@@ -27,5 +27,18 @@ public class CashCardController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // In Post request Spring Web will deserialise the data into a CashCard object for us.
+    // We can add UriComponentsBuilder ucb as a method argument to this POST handler method and it was
+    // automatically passed through dependency injections.
+    @PostMapping
+    private ResponseEntity<Void> createCashCash(@RequestBody CashCard newCashCardRequest, UriComponentsBuilder ucb) {
+        CashCard savedCashCard = cashCardRepository.save(newCashCardRequest);
+        URI locationOfNewCashCard = ucb
+                .path("cashcards/{id}")
+                .buildAndExpand(savedCashCard.getId())
+                .toUri();
+        return ResponseEntity.created(locationOfNewCashCard).build();
     }
 }
