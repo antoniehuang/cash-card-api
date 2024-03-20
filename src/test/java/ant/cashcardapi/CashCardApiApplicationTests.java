@@ -56,4 +56,10 @@ class CashCardApiApplicationTests {
 		assertThat(id).isNotNull();
 		assertThat(amount).isEqualTo(250.00);
 	}
+
+	@Test
+	void shouldReturnListOfAllCashCardsWhenRequested() {
+		ResponseEntity<String> getResponse = restTemplate.getForEntity("/cashcards", String.class);
+		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+	}
 }
