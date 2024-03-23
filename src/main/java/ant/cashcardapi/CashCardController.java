@@ -1,11 +1,14 @@
 package ant.cashcardapi;
 
-import org.apache.coyote.Response;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @RestController // Tells Spring that this class is a Component of type RestController
@@ -43,8 +46,13 @@ public class CashCardController {
     }
 
     @GetMapping
-    private ResponseEntity<Iterable<CashCard>> getAllCashCards() {
-        Iterable<CashCard> listOfAllCashCards = cashCardRepository.findAll();
-        return ResponseEntity.ok(listOfAllCashCards);
+    private ResponseEntity<List<CashCard>> findAll(Pageable pageable) {
+        Page<CashCard> page = cashCardRepository.findAll(
+                PageRequest.of(
+                        pageable.getPageNumber(),
+                        pageable.getPageSize()
+                ));
+
+        return ResponseEntity.ok(page.getContent());
     }
 }
