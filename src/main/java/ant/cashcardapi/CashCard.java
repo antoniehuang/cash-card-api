@@ -10,6 +10,7 @@ public class CashCard {
 
     @Id // Specify id as the id for the CashCardRepository.
     private Long id;
-
     private Double amount;
+    private String owner;
+
 }
