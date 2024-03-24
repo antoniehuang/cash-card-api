@@ -28,15 +28,15 @@ public class CashCardTest {
     @BeforeEach
     void setUp() {
         cashCards = Arrays.array(
-                new CashCard(99L, 123.45),
-                new CashCard(100L, 1.0),
-                new CashCard(101L, 150.0)
+                new CashCard(99L, 123.45, "sarah1"),
+                new CashCard(100L, 1.0, "sarah1"),
+                new CashCard(101L, 150.0, "sarah1")
         );
     }
 
     @Test
     void shouldSerialiseCashCard() throws IOException {
-        CashCard cashCard = new CashCard(99L, 123.45);
+        CashCard cashCard = new CashCard(99L, 123.45, "sarah1");
 
         JsonContent<CashCard> jsonResult = json.write(cashCard);
 
@@ -54,12 +54,13 @@ public class CashCardTest {
         String expected = """
                 {
                   "id": 99,
-                  "amount": 123.45
+                  "amount": 123.45,
+                  "owner": "sarah1"
                 }
                 """;
 
         ObjectContent<CashCard> cashCardObjectContent = json.parse(expected);
-        assertThat(cashCardObjectContent.getObject()).isEqualTo(new CashCard(99L, 123.45));
+        assertThat(cashCardObjectContent.getObject()).isEqualTo(new CashCard(99L, 123.45, "sarah1"));
 
         CashCard cashCardObject = json.parseObject(expected);
         assertThat(cashCardObject.getId()).isEqualTo(99);
@@ -75,9 +76,9 @@ public class CashCardTest {
     void cashCardListDeserialisationTest() throws IOException {
         String expected = """
                 [
-                  { "id": 99, "amount": 123.45 },
-                  { "id": 100, "amount": 1.0 },
-                  { "id": 101, "amount": 150.0 }
+                  { "id": 99, "amount": 123.45, "owner": "sarah1"},
+                  { "id": 100, "amount": 1.0, "owner": "sarah1"},
+                  { "id": 101, "amount": 150.0, "owner": "sarah1"}
                 ]
                 """;
 
