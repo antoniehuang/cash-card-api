@@ -139,4 +139,12 @@ class CashCardApiApplicationTests {
 				.getForEntity("/cashcards/99", String.class);
 		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
 	}
+
+	@Test
+	void shouldRejectUsersWhoAreNotCardOwners() {
+		ResponseEntity<String> getResponse = restTemplate
+				.withBasicAuth("hank-owns-no-cards", "qrs456")
+				.getForEntity("/cashcards/99", String.class);
+		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+	}
 }
